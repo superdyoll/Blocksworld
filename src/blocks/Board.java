@@ -72,6 +72,7 @@ public class Board {
         return Arrays.equals(otherBoard.getState(), this.getState());
     }
     
+    
     public Integer moveAgent (int agentX, int agentY, int squareX, int squareY){
         Integer movedValue = null;
         if (isSquareNextToAgent(agentX,agentY, squareX,squareY)){
