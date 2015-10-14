@@ -72,6 +72,16 @@ public class Board {
         return Arrays.equals(otherBoard.getState(), this.getState());
     }
     
+    public String toString(){
+        String output = null;
+        for (Integer[] boardArray1 : boardArray) {
+            for (Integer boardArray2 : boardArray1) {
+                output += " " + boardArray2;
+            }
+            output += "\n";
+        }
+        return output;
+    }
     
     public Integer moveAgent (int agentX, int agentY, int squareX, int squareY){
         Integer movedValue = null;
