@@ -109,7 +109,8 @@ public class Board {
     public Integer moveAgent(int agentX, int agentY, int squareX, int squareY) {
         Integer movedValue = null;
         if (isSquareNextToSquare(agentX, agentY, squareX, squareY) 
-                && isSquareAgent(agentX,agentY)) {
+                && isSquareAgent(agentX,agentY)
+                && isSquareMoveableTo(squareX, squareY)) {
             movedValue = boardArray[squareY][squareX];
             boardArray[squareY][squareX] = boardArray[agentX][agentY];
             boardArray[agentY][agentX] = movedValue;
@@ -119,7 +120,8 @@ public class Board {
 
     private boolean isSquareNextToSquare(int firstX, int firstY, int secondX, int secondY) {
         boolean isNextToSquare = false;
-        if (isSquareWithinBounds(firstX, firstY) && isSquareWithinBounds(secondX, secondY)) {
+        if (isSquareWithinBounds(firstX, firstY) 
+                && isSquareWithinBounds(secondX, secondY)) {
             int xDiff = Math.abs(firstX - secondX);
             int yDiff = Math.abs(firstY - secondY);
             if ((xDiff == 0 && yDiff == 1) || (xDiff == 1 && yDiff == 0)) {
@@ -139,11 +141,12 @@ public class Board {
         return inSquare;
     }
     
-    public boolean isSquareMoveable(int x, int y){
+    private boolean isSquareMoveableTo(int x, int y){
         boolean moveableTo = false;
         if (isSquareWithinBounds(x, y)){
-            if (boardArray[x][y] != null && boardArray[x][y] != size * size){
-                
+            if (boardArray[x][y] != null 
+                    && boardArray[x][y] != size * size){
+                moveableTo = true;
             }
         }
         return moveableTo;
