@@ -7,10 +7,6 @@ package blocks;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -23,22 +19,18 @@ public class BoardTest {
     public BoardTest() {
     }
 
-    @BeforeClass
-    public static void setUpClass() {
-    }
+    private Integer [][] createEmptyState(int size){
+        Integer[][] state = new Integer[3][3];
 
-    @AfterClass
-    public static void tearDownClass() {
+        for (int y = 0; y < size; y++){
+            for (int x = 0; x < size; x++) {
+                state[y][x] = 0;
+            }
+        }
+        
+        return state;
     }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
+    
     /**
      * Test of setValue method, of class Board.
      */
@@ -47,13 +39,12 @@ public class BoardTest {
         System.out.println("setValue");
         int x = 0;
         int y = 0;
-        int value = 0;
-        Board instance = null;
-        boolean expResult = false;
+        int value = 1;
+        Board instance = new Board(3);
+        boolean expResult = true;
         boolean result = instance.setValue(x, y, value);
+        System.out.println(instance);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -61,15 +52,22 @@ public class BoardTest {
      */
     @Test
     public void testGetValue() {
-        System.out.println("getValue");
-        int x = 0;
-        int y = 0;
-        Board instance = null;
-        int expResult = 0;
-        int result = instance.getValue(x, y);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+ 
+        try {
+            System.out.println("getValue");
+            int x = 0;
+            int y = 0;
+            Integer[][] state = createEmptyState(3);
+            state[0][0] = 1;
+            Board instance = new Board(state);
+            int expResult = 1;
+            int result = instance.getValue(x, y);
+            System.out.println(instance);
+            assertEquals(expResult, result);
+        } catch (Exception ex) {
+            fail(ex.getMessage());
+        }
+
     }
 
     /**
@@ -78,12 +76,11 @@ public class BoardTest {
     @Test
     public void testGetState() {
         System.out.println("getState");
-        Board instance = null;
-        Integer[][] expResult = null;
+        Board instance = new Board(3);
+        Integer[][] expResult = new Integer[3][3];
         Integer[][] result = instance.getState();
+        
         assertArrayEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -91,14 +88,23 @@ public class BoardTest {
      */
     @Test
     public void testIsEqual() {
-        System.out.println("isEqual");
-        Board otherBoard = null;
-        Board instance = null;
-        boolean expResult = false;
-        boolean result = instance.isEqual(otherBoard);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try {
+            System.out.println("isEqual");
+            Integer[][] state = createEmptyState(3);
+            
+            state[0][0] = 9;
+            state[0][1] = 1;
+            
+            Board otherBoard = new Board(state);
+            Board instance = new Board(state);
+            
+            boolean expResult = true;
+            boolean result = instance.isEqual(otherBoard);
+            assertEquals(expResult, result);
+            
+        } catch (Exception ex) {
+            fail(ex.getMessage());
+        }
     }
 
     /**
@@ -111,18 +117,13 @@ public class BoardTest {
         int agentY = 0;
         int squareX = 1;
         int squareY = 0;
-        Integer[][] state = new Integer[3][3];
-
-        for (Integer[] state1 : state) {
-            for (Integer state2 : state1) {
-                state2 = 0;
-            }
-        }
+        
+        Integer[][] state = createEmptyState(3);
 
         state[0][0] = 9;
         state[0][1] = 1;
 
-        Integer[][] expectedFinalState = state.clone();
+        Integer[][] expectedFinalState = createEmptyState(3);
 
         expectedFinalState[0][1] = 9;
         expectedFinalState[0][0] = 1;
@@ -131,13 +132,18 @@ public class BoardTest {
         try {
             instance = new Board(state);
 
+            System.out.println(instance);
+            
             Integer expResult = 1;
             Integer result = instance.moveAgent(agentX, agentY, squareX, squareY);
+            
+            System.out.println(instance);
+            
             assertEquals(expResult, result);
-            // TODO review the generated test code and remove the default call to fail.
-            assertArrayEquals(expectedFinalState, state);
+
+            assertArrayEquals(expectedFinalState, instance.getState());
         } catch (Exception ex) {
-            Logger.getLogger(BoardTest.class.getName()).log(Level.SEVERE, null, ex);
+            fail(ex.getMessage());
         }
     }
 
