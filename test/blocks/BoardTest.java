@@ -19,18 +19,18 @@ public class BoardTest {
     public BoardTest() {
     }
 
-    private Integer [][] createEmptyState(int size){
+    private Integer[][] createEmptyState(int size) {
         Integer[][] state = new Integer[3][3];
 
-        for (int y = 0; y < size; y++){
+        for (int y = 0; y < size; y++) {
             for (int x = 0; x < size; x++) {
                 state[y][x] = 0;
             }
         }
-        
+
         return state;
     }
-    
+
     /**
      * Test of setValue method, of class Board.
      */
@@ -52,7 +52,7 @@ public class BoardTest {
      */
     @Test
     public void testGetValue() {
- 
+
         try {
             System.out.println("getValue");
             int x = 0;
@@ -79,7 +79,7 @@ public class BoardTest {
         Board instance = new Board(3);
         Integer[][] expResult = new Integer[3][3];
         Integer[][] result = instance.getState();
-        
+
         assertArrayEquals(expResult, result);
     }
 
@@ -91,17 +91,17 @@ public class BoardTest {
         try {
             System.out.println("isEqual");
             Integer[][] state = createEmptyState(3);
-            
+
             state[0][0] = 9;
             state[0][1] = 1;
-            
+
             Board otherBoard = new Board(state);
             Board instance = new Board(state);
-            
+
             boolean expResult = true;
             boolean result = instance.isEqual(otherBoard);
             assertEquals(expResult, result);
-            
+
         } catch (Exception ex) {
             fail(ex.getMessage());
         }
@@ -115,7 +115,7 @@ public class BoardTest {
         System.out.println("moveAgent");
         int squareX = 1;
         int squareY = 0;
-        
+
         Integer[][] state = createEmptyState(3);
 
         state[0][0] = 9;
@@ -133,41 +133,49 @@ public class BoardTest {
             instance = new Board(state);
 
             System.out.println(instance);
-            
+
             Integer expResult = 1;
             Integer result = instance.moveAgent(squareX, squareY);
-            
+
             System.out.println(instance);
-            
+
             assertEquals(expResult, result);
 
             assertArrayEquals(expectedFinalState, instance.getState());
-            
+
             //test moving to specific square out of range
             System.out.println("Test moving to square out of range");
             instance = new Board(state);
-            
+
             System.out.println(instance);
-            
+
             expResult = null;
             result = instance.moveAgent(squareX + 2, squareY + 2);
-            
+
             System.out.println(instance);
-            
+
             assertEquals(expResult, result);
-            
+
             //test moving with direction
             System.out.println("Test moving in direction");
+
+            state = createEmptyState(3);
+
+            state[0][0] = 9;
+            state[0][1] = 1;
+
             instance = new Board(state);
-            
+
             System.out.println(instance);
-            
+
             expResult = 1;
-            result = instance.moveAgent(Board.Direction.LEFT);
-            
+            result = instance.moveAgent(Board.Direction.RIGHT);
+
             System.out.println(instance);
-            
+
             assertEquals(expResult, result);
+
+            assertArrayEquals(expectedFinalState, instance.getState());
         } catch (Exception ex) {
             fail(ex.getMessage());
         }
