@@ -72,9 +72,9 @@ public class Board {
                 }
             }
             if (allowSet) {
+                boardArray = state;
+                this.size = state.length;
                 if (findAgent()) {
-                    boardArray = state;
-                    this.size = state.length;
                     isSet = true;
                 }
             }
@@ -124,6 +124,8 @@ public class Board {
             movedValue = boardArray[squareY][squareX];
             boardArray[squareY][squareX] = boardArray[agentX][agentY];
             boardArray[agentY][agentX] = movedValue;
+            agentX = squareX;
+            agentY = squareY;
         }
         return movedValue;
     }
