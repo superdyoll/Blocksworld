@@ -11,24 +11,28 @@ import java.util.ArrayList;
  *
  * @author Lloyd
  */
-public class BreadthFirst {
-    private Board startState;
-    private Board endState;
+public abstract class Search {
 
-    public BreadthFirst(Board startState, Board endState) {
+    protected Board startState;
+    protected Board endState;
+    
+    /**
+     *
+     * @param startState
+     * @param endState
+     */
+    public Search (Board startState, Board endState){
         this.startState = startState;
         this.endState = endState;
     }
-
-    public ArrayList<Board.Direction> performSearch(Node startNode){
-        if (startNode.getState().equals(endState)){
-            ArrayList<Board.Direction> returnArray = new ArrayList<Board.Direction>();
-            returnArray.add(startNode.getDirection());
-            return returnArray;
-        }
+    
+    public ArrayList<Node> performSearch(){
+        return performSearch(new Node(startState, null, 0));
     }
     
-    /**
+    protected abstract ArrayList<Node> performSearch(Node startNode);
+    
+        /**
      * @return the startState
      */
     public Board getStartState() {
@@ -41,6 +45,4 @@ public class BreadthFirst {
     public Board getEndState() {
         return endState;
     }
-    
-    
 }

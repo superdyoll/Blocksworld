@@ -19,18 +19,6 @@ public class BoardTest {
     public BoardTest() {
     }
 
-    private Integer[][] createEmptyState(int size) {
-        Integer[][] state = new Integer[3][3];
-
-        for (int y = 0; y < size; y++) {
-            for (int x = 0; x < size; x++) {
-                state[y][x] = 0;
-            }
-        }
-
-        return state;
-    }
-
     /**
      * Test of setValue method, of class Board.
      */
@@ -57,7 +45,7 @@ public class BoardTest {
             System.out.println("getValue");
             int x = 0;
             int y = 0;
-            Integer[][] state = createEmptyState(3);
+            Integer[][] state = instance.createEmptyState();
             state[0][0] = 1;
             Board instance = new Board(state);
             int expResult = 1;
@@ -90,7 +78,7 @@ public class BoardTest {
     public void testequals() {
         try {
             System.out.println("isEqual");
-            Integer[][] state = createEmptyState(3);
+            Integer[][] state = instance.createEmptyState();
 
             state[0][0] = 9;
             state[0][1] = 1;
@@ -116,17 +104,18 @@ public class BoardTest {
         int squareX = 1;
         int squareY = 0;
 
-        Integer[][] state = createEmptyState(3);
+        Board instance = new Board(3);
+        
+        Integer[][] state = instance.createEmptyState();
 
         state[0][0] = 9;
         state[0][1] = 1;
 
-        Integer[][] expectedFinalState = createEmptyState(3);
+        Integer[][] expectedFinalState = instance.createEmptyState();
 
         expectedFinalState[0][1] = 9;
         expectedFinalState[0][0] = 1;
 
-        Board instance;
         try {
             //Test moving to specific square within range
             System.out.println("Test moving to square");
@@ -159,7 +148,7 @@ public class BoardTest {
             //test moving with direction
             System.out.println("Test moving in direction");
 
-            state = createEmptyState(3);
+            state = instance.createEmptyState();
 
             state[0][0] = 9;
             state[0][1] = 1;
@@ -178,13 +167,13 @@ public class BoardTest {
             assertArrayEquals(expectedFinalState, instance.getState());
             
             //test second move
-            state = createEmptyState(3);
+            state = instance.createEmptyState();
 
             state[0][0] = 9;
             state[0][1] = 1;
             state[1][1] = 2;
             
-            expectedFinalState = createEmptyState(3);
+            expectedFinalState = instance.createEmptyState();
             
         } catch (Exception ex) {
             fail(ex.getMessage());

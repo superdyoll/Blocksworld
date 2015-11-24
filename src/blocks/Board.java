@@ -7,6 +7,7 @@ package blocks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  *
@@ -17,6 +18,7 @@ public class Board {
     private int size;
     private int agentX = 0;
     private int agentY = 0;
+    private int agentValue = 0;
 
     public enum Direction {
 
@@ -39,7 +41,20 @@ public class Board {
 
     public Board(int size) {
         this.size = size;
+        this.agentValue = size*size;
         boardArray = new Integer[size][size];
+    }
+
+    public Integer[][] createEmptyState() {
+        Integer[][] state = new Integer[size][size];
+
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                state[y][x] = 0;
+            }
+        }
+
+        return state;
     }
 
     public boolean setValue(int x, int y, int value) {
@@ -212,24 +227,26 @@ public class Board {
         }
         return agentLocation;
     }
-    
-    public ArrayList<Direction> findPossibleMoves(){
-        if (findAgent()){
+
+    public ArrayList<Direction> findPossibleMoves() {
+        if (findAgent()) {
             ArrayList<Direction> directions = new ArrayList<>();
-            if (agentX > 0 && agentX < size){
+            if (agentX > 0 && agentX < size) {
                 directions.add(Direction.LEFT);
             }
-            if (agentX >= 0 && agentX < size-1){
+            if (agentX >= 0 && agentX < size - 1) {
                 directions.add(Direction.RIGHT);
             }
-            if (agentY > 0 && agentY < size){
+            if (agentY > 0 && agentY < size) {
                 directions.add(Direction.UP);
             }
-            if (agentY >= 0 && agentY < size - 1){
+            if (agentY >= 0 && agentY < size - 1) {
                 directions.add(Direction.DOWN);
             }
+            // Add some randomness into the order of directions
+            Collections.shuffle(directions);
             return directions;
-        }else{
+        } else {
             return null;
         }
     }
