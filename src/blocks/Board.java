@@ -5,6 +5,7 @@
  */
 package blocks;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -86,7 +87,7 @@ public class Board {
         return boardArray;
     }
 
-    public boolean isEqual(Board otherBoard) {
+    public boolean equals(Board otherBoard) {
         return Arrays.equals(otherBoard.getState(), this.getState());
     }
 
@@ -210,5 +211,26 @@ public class Board {
             }
         }
         return agentLocation;
+    }
+    
+    public ArrayList<Direction> findPossibleMoves(){
+        if (findAgent()){
+            ArrayList<Direction> directions = new ArrayList<>();
+            if (agentX > 0 && agentX < size){
+                directions.add(Direction.LEFT);
+            }
+            if (agentX >= 0 && agentX < size-1){
+                directions.add(Direction.RIGHT);
+            }
+            if (agentY > 0 && agentY < size){
+                directions.add(Direction.UP);
+            }
+            if (agentY >= 0 && agentY < size - 1){
+                directions.add(Direction.DOWN);
+            }
+            return directions;
+        }else{
+            return null;
+        }
     }
 }

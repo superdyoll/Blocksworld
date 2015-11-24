@@ -5,53 +5,70 @@
  */
 package blocks;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  *
  * @author Lloyd
  */
 public class Node {
-    
-    
-    private Integer content;
-    private List<Node> children;
-    
-    public Node (Integer content){
-        this.content = content;
+
+    private Board state;
+    private Board.Direction direction;
+    private ArrayList<Node> children;
+    private Boolean visited;
+
+    public Node(Board currentState, Board.Direction direction) {
+        this.state = currentState;
+        this.direction = direction;
+        state.moveAgent(this.direction);
     }
 
     /**
-     * @return the content
+     * @return the state
      */
-    public Integer getContent() {
-        return content;
-    }
-
-    /**
-     * @param content the content to set
-     */
-    public void setContent(Integer content) {
-        this.content = content;
+    public Board getState() {
+        return state;
     }
 
     /**
      * @return the children
      */
-    public List<Node> getChildren() {
+    public ArrayList<Node> getChildren() {
         return children;
     }
-    
-    public void addChildren(Node child){
+
+    public void addChild(Node child) {
         this.children.add(child);
+    }
+    
+    public void setChildren(Board board){
+        ArrayList<Board.Direction> directions = board.findPossibleMoves();
+        for (Board.Direction currentDirection : directions) {
+            Node newNode = new Node(state, currentDirection);
+            this.addChild(newNode);
+        }
     }
 
     /**
-     * @param children the children to set
+     * @return the direction
      */
-    public void setChildren(List<Node> children) {
-        this.children = children;
+    public Board.Direction getDirection() {
+        return direction;
     }
-    
-    
+
+    /**
+     * @return the visited
+     */
+    public Boolean isVisited() {
+        return visited;
+    }
+
+    /**
+     * @param visited the visited to set
+     */
+    public void setVisited(Boolean visited) {
+        this.visited = visited;
+    }
+
 }

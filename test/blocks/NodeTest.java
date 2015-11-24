@@ -5,6 +5,7 @@
  */
 package blocks;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -19,28 +20,15 @@ public class NodeTest {
     }
 
     /**
-     * Test of getContent method, of class Node.
+     * Test of getState method, of class Node.
      */
     @Test
-    public void testGetContent() {
-        System.out.println("getContent");
+    public void testGetState() {
+        System.out.println("getState");
         Node instance = null;
-        Integer expResult = null;
-        Integer result = instance.getContent();
+        Board expResult = null;
+        Board result = instance.getState();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of setContent method, of class Node.
-     */
-    @Test
-    public void testSetContent() {
-        System.out.println("setContent");
-        Integer content = null;
-        Node instance = null;
-        instance.setContent(content);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -60,14 +48,14 @@ public class NodeTest {
     }
 
     /**
-     * Test of addChildren method, of class Node.
+     * Test of addChild method, of class Node.
      */
     @Test
-    public void testAddChildren() {
+    public void testAddChild() {
         System.out.println("addChildren");
         Node child = null;
         Node instance = null;
-        instance.addChildren(child);
+        instance.addChild(child);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }
@@ -78,9 +66,23 @@ public class NodeTest {
     @Test
     public void testSetChildren() {
         System.out.println("setChildren");
-        List<Node> children = null;
+        ArrayList<Node> children = null;
         Node instance = null;
         instance.setChildren(children);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    /**
+     * Test of getDirection method, of class Node.
+     */
+    @Test
+    public void testGetDirection() {
+        System.out.println("getDirection");
+        Node instance = null;
+        Board.Direction expResult = null;
+        Board.Direction result = instance.getDirection();
+        assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

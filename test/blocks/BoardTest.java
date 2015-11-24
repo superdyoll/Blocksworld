@@ -87,7 +87,7 @@ public class BoardTest {
      * Test of isEqual method, of class Board.
      */
     @Test
-    public void testIsEqual() {
+    public void testequals() {
         try {
             System.out.println("isEqual");
             Integer[][] state = createEmptyState(3);
@@ -99,7 +99,7 @@ public class BoardTest {
             Board instance = new Board(state);
 
             boolean expResult = true;
-            boolean result = instance.isEqual(otherBoard);
+            boolean result = instance.equals(otherBoard);
             assertEquals(expResult, result);
 
         } catch (Exception ex) {
@@ -176,6 +176,16 @@ public class BoardTest {
             assertEquals(expResult, result);
 
             assertArrayEquals(expectedFinalState, instance.getState());
+            
+            //test second move
+            state = createEmptyState(3);
+
+            state[0][0] = 9;
+            state[0][1] = 1;
+            state[1][1] = 2;
+            
+            expectedFinalState = createEmptyState(3);
+            
         } catch (Exception ex) {
             fail(ex.getMessage());
         }
