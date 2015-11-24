@@ -113,8 +113,6 @@ public class BoardTest {
     @Test
     public void testMoveAgent() {
         System.out.println("moveAgent");
-        int agentX = 0;
-        int agentY = 0;
         int squareX = 1;
         int squareY = 0;
         
@@ -130,18 +128,46 @@ public class BoardTest {
 
         Board instance;
         try {
+            //Test moving to specific square within range
+            System.out.println("Test moving to square");
             instance = new Board(state);
 
             System.out.println(instance);
             
             Integer expResult = 1;
-            Integer result = instance.moveAgent(agentX, agentY, squareX, squareY);
+            Integer result = instance.moveAgent(squareX, squareY);
             
             System.out.println(instance);
             
             assertEquals(expResult, result);
 
             assertArrayEquals(expectedFinalState, instance.getState());
+            
+            //test moving to specific square out of range
+            System.out.println("Test moving to square out of range");
+            instance = new Board(state);
+            
+            System.out.println(instance);
+            
+            expResult = null;
+            result = instance.moveAgent(squareX + 2, squareY + 2);
+            
+            System.out.println(instance);
+            
+            assertEquals(expResult, result);
+            
+            //test moving with direction
+            System.out.println("Test moving in direction");
+            instance = new Board(state);
+            
+            System.out.println(instance);
+            
+            expResult = 1;
+            result = instance.moveAgent(Board.Direction.LEFT);
+            
+            System.out.println(instance);
+            
+            assertEquals(expResult, result);
         } catch (Exception ex) {
             fail(ex.getMessage());
         }

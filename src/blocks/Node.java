@@ -5,19 +5,20 @@
  */
 package blocks;
 
+import java.util.List;
+
 /**
  *
  * @author Lloyd
  */
 public class Node {
     
-    private Integer content;
-    private Node parent;
-    private Node[] children;
     
-    public Node (Integer content, Node parent){
+    private Integer content;
+    private List<Node> children;
+    
+    public Node (Integer content){
         this.content = content;
-        this.parent = parent;
     }
 
     /**
@@ -35,23 +36,20 @@ public class Node {
     }
 
     /**
-     * @return the parent
-     */
-    public Node getParent() {
-        return parent;
-    }
-
-    /**
      * @return the children
      */
-    public Node[] getChildren() {
+    public List<Node> getChildren() {
         return children;
+    }
+    
+    public void addChildren(Node child){
+        this.children.add(child);
     }
 
     /**
      * @param children the children to set
      */
-    public void setChildren(Node[] children) {
+    public void setChildren(List<Node> children) {
         this.children = children;
     }
     

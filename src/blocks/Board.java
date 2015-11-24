@@ -14,9 +14,18 @@ import java.util.Arrays;
 public class Board {
 
     private int size;
+    private int agentX = 0;
+    private int agentY = 0;
+
+    public enum Direction {
+
+        LEFT, RIGHT, UP, DOWN
+    }
 
     /* On the board 0 is considered to be a blank square and the value
      * of size * size is considered to be the position of the agent
+     * First array is y
+     * Second array is X
      */
     private Integer[][] boardArray;
 
@@ -63,9 +72,11 @@ public class Board {
                 }
             }
             if (allowSet) {
-                boardArray = state;
-                this.size = state.length;
-                isSet = true;
+                if (findAgent()) {
+                    boardArray = state;
+                    this.size = state.length;
+                    isSet = true;
+                }
             }
         }
         return isSet;
@@ -85,7 +96,7 @@ public class Board {
             for (Integer value : innerState) {
                 if (value == null) {
                     output += " #";
-                } else if (value == size*size) {
+                } else if (value == size * size) {
                     output += " @";
                 } else {
                     output += " " + value;
@@ -96,20 +107,19 @@ public class Board {
         return output;
     }
 
-    /**Moves the agent to another location by swapping with the current contents
+    /**
+     * Moves the agent to another location by swapping with the current contents
      * of that square
      *
-     * @param agentX
-     * @param agentY
+     *
      * @param squareX
      * @param squareY
-     * @return
-     * Returns the number that it has swapped with
+     * @return Returns the number that it has swapped with
      */
-    public Integer moveAgent(int agentX, int agentY, int squareX, int squareY) {
+    public Integer moveAgent(int squareX, int squareY) {
         Integer movedValue = null;
-        if (isSquareNextToSquare(agentX, agentY, squareX, squareY) 
-                && isSquareAgent(agentX,agentY)
+        if (isSquareNextToSquare(agentX, agentY, squareX, squareY)
+                && isSquareAgent(agentX, agentY)
                 && isSquareMoveableTo(squareX, squareY)) {
             movedValue = boardArray[squareY][squareX];
             boardArray[squareY][squareX] = boardArray[agentX][agentY];
@@ -118,9 +128,24 @@ public class Board {
         return movedValue;
     }
 
+    public Integer moveAgent(Direction direction) {
+        switch (direction) {
+            case LEFT:
+                return moveAgent(agentX - 1, agentY);
+            case RIGHT:
+                return moveAgent(agentX + 1, agentY);
+            case UP:
+                return moveAgent(agentX, agentY - 1);
+            case DOWN:
+                return moveAgent(agentX, agentY + 1);
+        }
+
+        return null;
+    }
+
     private boolean isSquareNextToSquare(int firstX, int firstY, int secondX, int secondY) {
         boolean isNextToSquare = false;
-        if (isSquareWithinBounds(firstX, firstY) 
+        if (isSquareWithinBounds(firstX, firstY)
                 && isSquareWithinBounds(secondX, secondY)) {
             int xDiff = Math.abs(firstX - secondX);
             int yDiff = Math.abs(firstY - secondY);
@@ -140,23 +165,48 @@ public class Board {
         }
         return inSquare;
     }
-    
-    private boolean isSquareMoveableTo(int x, int y){
+
+    private boolean isSquareMoveableTo(int x, int y) {
         boolean moveableTo = false;
-        if (isSquareWithinBounds(x, y)){
-            if (boardArray[x][y] != null 
-                    && boardArray[x][y] != size * size){
+        if (isSquareWithinBounds(x, y)) {
+            if (boardArray[y][x] != null
+                    && boardArray[y][x] != size * size) {
                 moveableTo = true;
             }
         }
         return moveableTo;
     }
-    
-    private boolean isSquareAgent (int x, int y){
-        if (boardArray[y][x] == size * size){
+
+    private boolean isSquareAgent(int x, int y) {
+        if (boardArray[y][x] == size * size) {
             return true;
-        }else{
+        } else {
             return false;
         }
+    }
+
+    public boolean findAgent() {
+        boolean agentFound = isSquareAgent(agentX, agentY);
+        int[] agentPosition = null;
+        if (!agentFound) {
+            agentPosition = findAgent(boardArray);
+            agentX = agentPosition[0];
+            agentY = agentPosition[1];
+            agentFound = true;
+        }
+        return agentFound;
+    }
+
+    private int[] findAgent(Integer[][] board) {
+        int[] agentLocation = new int[2];
+        for (int y = 0; y < board.length; y++) {
+            for (int x = 0; x < board[y].length; x++) {
+                if (board[y][x] == size * size) {
+                    agentLocation[0] = x;
+                    agentLocation[1] = y;
+                }
+            }
+        }
+        return agentLocation;
     }
 }
