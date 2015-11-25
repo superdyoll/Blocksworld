@@ -34,13 +34,19 @@ public class DepthFirst extends Search{
         ArrayList<Node> returnArray = new ArrayList<>();
         if (startNode.getState().equals(endState)){
             returnArray.add(startNode);
+            nodesExpanded++;
+            nodesStored++;
         }else{
             try {
                 if (startNode.setChildren() > 0){
-                    for (Node nextNode : startNode.getChildren()) {
+                    ArrayList<Node> children = startNode.getChildren();
+                    for (Node nextNode : children) {
                         ArrayList <Node> searchResults = performSearch(nextNode);
                         if (searchResults != null){
+                            returnArray.add(startNode);
                             returnArray.addAll(searchResults);
+                            nodesExpanded++;
+                            nodesStored++;
                             break;
                         }
                     }

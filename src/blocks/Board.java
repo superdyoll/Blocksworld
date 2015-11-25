@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -91,6 +93,7 @@ public class Board {
             if (allowSet) {
                 boardArray = state;
                 this.size = state.length;
+                this.agentValue = size * size;
                 if (findAgent()) {
                     isSet = true;
                 }
@@ -142,21 +145,32 @@ public class Board {
      * @param squareY
      * @return Returns the number that it has swapped with
      */
-    public Integer moveAgent(int squareX, int squareY) {
+    public Integer moveAgent(int squareX, int squareY) throws Exception {
+        
         Integer movedValue = null;
         if (isSquareNextToSquare(agentX, agentY, squareX, squareY)
                 && isSquareAgent(agentX, agentY)
-                && isSquareMoveableTo(squareX, squareY)) {
+                && isSquareMoveableTo(squareX, squareY)
+                && findAgent()) {
+            //System.out.println("Current agent (x,y): (" + agentX + "," + agentY + ")");
+            //System.out.println("Passed all tests");
             movedValue = boardArray[squareY][squareX];
-            boardArray[squareY][squareX] = boardArray[agentX][agentY];
+            //System.out.println("Moved val: " + movedValue);
+            boardArray[squareY][squareX] = boardArray[agentY][agentX];
             boardArray[agentY][agentX] = movedValue;
             agentX = squareX;
             agentY = squareY;
+            //System.out.println("New Agent (x,y): (" + agentX + "," + agentY + ")");
+        }else{
+            throw new Exception("Unable to move agent");
         }
+        //System.out.println("The grid space now");
+        //System.out.println(this);
+        //System.out.println("Finished");
         return movedValue;
     }
 
-    public Integer moveAgent(Direction direction) {
+    public Integer moveAgent(Direction direction) throws Exception {
         switch (direction) {
             case LEFT:
                 return moveAgent(agentX - 1, agentY);
@@ -260,5 +274,19 @@ public class Board {
         } else {
             return null;
         }
+    }
+    
+    public Board clone() {
+        Integer [][] clone = new Integer [size][size];
+        for (int y = 0; y < size; y++) {
+            clone [y] = boardArray[y].clone();
+        }
+        Board returnBoard = null;
+        try {
+            returnBoard = new Board(clone);
+        } catch (Exception ex) {
+            Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return returnBoard;
     }
 }

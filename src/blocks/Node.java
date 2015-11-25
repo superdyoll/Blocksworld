@@ -19,14 +19,14 @@ public class Node {
     private Boolean visited;
     private int depth;
 
-    public Node(Board currentState, Board.Direction direction, int depth) {
+    public Node(Board currentState, Board.Direction direction, int depth) throws Exception {
         this.state = currentState;
         this.direction = direction;
         this.depth = depth;
         if (direction != null){
             state.moveAgent(this.direction);
         }
-        System.out.println(state);
+        //System.out.println(state);
     }
 
     /**
@@ -58,7 +58,8 @@ public class Node {
         System.out.print("We can go in these directions ");
         for (Board.Direction currentDirection : directions) {
             System.out.print(currentDirection);
-            Node newNode = new Node(state, currentDirection, depth + 1);
+            Board replicate = board.clone();
+            Node newNode = new Node(replicate, currentDirection, depth + 1);
             this.addChild(newNode);
         }
         System.out.println("");

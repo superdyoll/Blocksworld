@@ -15,8 +15,8 @@ public abstract class Search {
 
     protected Board startState;
     protected Board endState;
-    private int nodesExpanded;
-    private int nodesStored;
+    protected int nodesExpanded;
+    protected int nodesStored;
     
     /**
      *
@@ -28,7 +28,7 @@ public abstract class Search {
         this.endState = endState;
     }
     
-    public ArrayList<Node> performSearch(){
+    public ArrayList<Node> performSearch() throws Exception{
         return performSearch(new Node(startState, null, 0));
     }
     
