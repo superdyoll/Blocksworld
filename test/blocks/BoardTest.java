@@ -45,9 +45,10 @@ public class BoardTest {
             System.out.println("getValue");
             int x = 0;
             int y = 0;
-            Integer[][] state = instance.createEmptyState();
+            Board instance = new Board(3);
+            Integer[][] state = instance.getState();
             state[0][0] = 1;
-            Board instance = new Board(state);
+            
             int expResult = 1;
             int result = instance.getValue(x, y);
             System.out.println(instance);
@@ -66,6 +67,11 @@ public class BoardTest {
         System.out.println("getState");
         Board instance = new Board(3);
         Integer[][] expResult = new Integer[3][3];
+        for (int x = 0; x < expResult[0].length; x++) {
+            for (int y = 0; y < expResult.length; y++) {
+                expResult[x][y] = 0;
+            }
+        }
         Integer[][] result = instance.getState();
 
         assertArrayEquals(expResult, result);
@@ -78,16 +84,26 @@ public class BoardTest {
     public void testequals() {
         try {
             System.out.println("isEqual");
-            Integer[][] state = instance.createEmptyState();
+            Board otherBoard = new Board(3);
+            Board instance = new Board(3);
+            
+            Integer[][] state = instance.getState();
 
             state[0][0] = 9;
             state[0][1] = 1;
-
-            Board otherBoard = new Board(state);
-            Board instance = new Board(state);
+            
+            state = otherBoard.getState();
+            state[0][0] = 9;
+            state[0][1] = 1;
 
             boolean expResult = true;
             boolean result = instance.equals(otherBoard);
+            
+            System.out.println("Original square");
+            System.out.println(instance);
+            
+            System.out.println("Expected square");
+            System.out.println(otherBoard);
             assertEquals(expResult, result);
 
         } catch (Exception ex) {

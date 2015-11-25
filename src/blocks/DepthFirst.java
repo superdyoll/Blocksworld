@@ -6,6 +6,8 @@
 package blocks;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -33,16 +35,20 @@ public class DepthFirst extends Search{
         if (startNode.getState().equals(endState)){
             returnArray.add(startNode);
         }else{
-            if (startNode.setChildren() > 0){
-                for (Node nextNode : startNode.getChildren()) {
-                    ArrayList <Node> searchResults = performSearch(nextNode);
-                    if (searchResults != null){
-                        returnArray.addAll(searchResults);
-                        break;
+            try {
+                if (startNode.setChildren() > 0){
+                    for (Node nextNode : startNode.getChildren()) {
+                        ArrayList <Node> searchResults = performSearch(nextNode);
+                        if (searchResults != null){
+                            returnArray.addAll(searchResults);
+                            break;
+                        }
                     }
+                }else{
+                    return null;
                 }
-            }else{
-                return null;
+            } catch (Exception ex) {
+                Logger.getLogger(DepthFirst.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         return returnArray;

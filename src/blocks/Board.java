@@ -8,6 +8,7 @@ package blocks;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Objects;
 
 /**
  *
@@ -41,11 +42,11 @@ public class Board {
 
     public Board(int size) {
         this.size = size;
-        this.agentValue = size*size;
-        boardArray = new Integer[size][size];
+        this.agentValue = size * size;
+        boardArray = createEmptyState();
     }
 
-    public Integer[][] createEmptyState() {
+    protected Integer[][] createEmptyState() {
         Integer[][] state = new Integer[size][size];
 
         for (int y = 0; y < size; y++) {
@@ -72,7 +73,7 @@ public class Board {
         return boardArray[y][x];
     }
 
-    private boolean setState(Integer[][] state) {
+    private boolean setState(Integer[][] state) throws Exception {
         boolean isSet = false;
         if (state.length == state[0].length) {
             int stateSize = state.length;
@@ -103,7 +104,16 @@ public class Board {
     }
 
     public boolean equals(Board otherBoard) {
-        return Arrays.equals(otherBoard.getState(), this.getState());
+        boolean areEqual = true;
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                if (!Objects.equals(otherBoard.getState()[y][x], this.getState()[y][x])){
+                    areEqual = false;
+                }
+            }
+        }
+        return areEqual;
+        //return Arrays.equals(otherBoard.getState(), this.getState());
     }
 
     public String toString() {
@@ -196,18 +206,13 @@ public class Board {
     }
 
     private boolean isSquareAgent(int x, int y) {
-        if (boardArray[y][x] == size * size) {
-            return true;
-        } else {
-            return false;
-        }
+        return boardArray[y][x] == size * size;
     }
 
-    public boolean findAgent() {
+    public boolean findAgent() throws Exception {
         boolean agentFound = isSquareAgent(agentX, agentY);
-        int[] agentPosition = null;
         if (!agentFound) {
-            agentPosition = findAgent(boardArray);
+            int[] agentPosition = findAgent(boardArray);
             agentX = agentPosition[0];
             agentY = agentPosition[1];
             agentFound = true;
@@ -215,20 +220,26 @@ public class Board {
         return agentFound;
     }
 
-    private int[] findAgent(Integer[][] board) {
+    private int[] findAgent(Integer[][] board) throws Exception {
         int[] agentLocation = new int[2];
+        boolean isSet = false;
         for (int y = 0; y < board.length; y++) {
             for (int x = 0; x < board[y].length; x++) {
                 if (board[y][x] == size * size) {
                     agentLocation[0] = x;
                     agentLocation[1] = y;
+                    isSet = true;
                 }
             }
         }
-        return agentLocation;
+        if (isSet) {
+            return agentLocation;
+        } else {
+            throw new Exception("Agent not found");
+        }
     }
 
-    public ArrayList<Direction> findPossibleMoves() {
+    public ArrayList<Direction> findPossibleMoves() throws Exception {
         if (findAgent()) {
             ArrayList<Direction> directions = new ArrayList<>();
             if (agentX > 0 && agentX < size) {

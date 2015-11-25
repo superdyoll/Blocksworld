@@ -26,6 +26,7 @@ public class Node {
         if (direction != null){
             state.moveAgent(this.direction);
         }
+        System.out.println(state);
     }
 
     /**
@@ -43,19 +44,24 @@ public class Node {
     }
 
     public void addChild(Node child) {
+        //System.out.println("I'm adding a node");
         this.children.add(child);
     }
     
-    public int setChildren(){
+    public int setChildren() throws Exception{
         return setChildren(this.state);
     }
     
-    public int setChildren(Board board){
+    public int setChildren(Board board) throws Exception{
+        this.children = new ArrayList<>();
         ArrayList<Board.Direction> directions = board.findPossibleMoves();
+        System.out.print("We can go in these directions ");
         for (Board.Direction currentDirection : directions) {
+            System.out.print(currentDirection);
             Node newNode = new Node(state, currentDirection, depth + 1);
             this.addChild(newNode);
         }
+        System.out.println("");
         return this.children.size();
     }
 
