@@ -70,6 +70,23 @@ public class Main {
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        try {
+            Board startState = new Board(3);
+            startState.getState()[2][0] = 1;
+            startState.getState()[2][1] = 2;
+            startState.getState()[1][1] = 9;
+
+            Board endState = new Board(3);
+            endState.getState()[2][0] = 1;
+            endState.getState()[1][0] = 2;
+            endState.getState()[2][2] = 9;
+
+            Search searchAStar = new AStar(startState, endState);
+            outputSearch(searchAStar);
+        } catch (Exception ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void outputSearch(Search theSearch) throws Exception {

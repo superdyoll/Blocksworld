@@ -8,6 +8,9 @@ package blocks;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,7 +19,7 @@ import java.util.logging.Logger;
  *
  * @author Lloyd
  */
-public class Board {
+public class Board implements Comparable<Board> {
 
     private int size;
     private int agentX = 0;
@@ -110,7 +113,7 @@ public class Board {
         boolean areEqual = true;
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                if (!Objects.equals(otherBoard.getState()[y][x], this.getState()[y][x])){
+                if (!Objects.equals(otherBoard.getState()[y][x], this.getState()[y][x])) {
                     areEqual = false;
                 }
             }
@@ -146,7 +149,7 @@ public class Board {
      * @return Returns the number that it has swapped with
      */
     public Integer moveAgent(int squareX, int squareY) throws Exception {
-        
+
         Integer movedValue = null;
         if (isSquareNextToSquare(agentX, agentY, squareX, squareY)
                 && isSquareAgent(agentX, agentY)
@@ -161,7 +164,7 @@ public class Board {
             agentX = squareX;
             agentY = squareY;
             //System.out.println("New Agent (x,y): (" + agentX + "," + agentY + ")");
-        }else{
+        } else {
             throw new Exception("Unable to move agent");
         }
         //System.out.println("The grid space now");
@@ -275,11 +278,11 @@ public class Board {
             return null;
         }
     }
-    
+
     public Board clone() {
-        Integer [][] clone = new Integer [size][size];
+        Integer[][] clone = new Integer[size][size];
         for (int y = 0; y < size; y++) {
-            clone [y] = boardArray[y].clone();
+            clone[y] = boardArray[y].clone();
         }
         Board returnBoard = null;
         try {
@@ -288,5 +291,61 @@ public class Board {
             Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
         }
         return returnBoard;
+    }
+
+    @Override
+    public int compareTo(Board otherBoard) {
+        if (this.equals(otherBoard)) {
+            return 0;
+        } else {
+            HashMap<Integer, Integer[]> thisBoardHash = getBlockLocations();
+            HashMap<Integer, Integer[]> otherBoardHash = otherBoard.getBlockLocations();
+
+            Iterator thisBoardIt = thisBoardHash.entrySet().iterator();
+            Iterator otherBoardIt = otherBoardHash.entrySet().iterator();
+
+            int offset = 0;
+
+            while (thisBoardIt.hasNext() && otherBoardIt.hasNext()) {
+                Map.Entry<Integer, Integer[]> pair = (Map.Entry<Integer, Integer[]>) thisBoardIt.next();
+                Integer[] otherBoardValue = otherBoardHash.get(pair.getKey());
+                if (otherBoardValue != null) {
+                    if (!Arrays.equals(pair.getValue(), otherBoardValue)) {
+                        //Calculate the manhatten distance
+                        //System.out.println("The don't equal");
+                        int xDiff = Math.abs(pair.getValue()[0] - otherBoardValue[0]);
+                        //System.out.println("xDiff " + xDiff);
+                        int yDiff = Math.abs(pair.getValue()[1] - otherBoardValue[1]);
+                        //System.out.println("yDiff " + yDiff);
+                        int manDistance = xDiff + yDiff;
+                        offset += manDistance;
+                    }
+                }
+            }
+
+            return offset;
+
+        }
+
+    }
+
+    /**
+     * Gets the location of all the non-zero objects
+     *
+     * @return Returns a hash map of the value and it's location in array [x,y]
+     */
+    protected HashMap<Integer, Integer[]> getBlockLocations() {
+        HashMap<Integer, Integer[]> returnHash = new HashMap<>();
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < size; x++) {
+                if (boardArray[y][x] != 0) {
+                    Integer[] coordinates = new Integer[2];
+                    coordinates[0] = x;
+                    coordinates[1] = y;
+                    returnHash.put(boardArray[y][x], coordinates);
+                }
+            }
+        }
+        return returnHash;
     }
 }

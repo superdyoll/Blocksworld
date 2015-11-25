@@ -60,23 +60,23 @@ public class DepthFirst extends Search {
         Node currentNode = startNode;
 
         // As we visit each state we check it's not the goal state
-        while (currentNode != null  && stack.size() > 0 && !endState.equals(currentNode.getState())) {
+        while (currentNode != null && stack.size() > 0 && !endState.equals(currentNode.getState())) {
 
             // If it isn't we increase the nodes expanded and stored
             nodesExpanded++;
+
+            Node removedNode = stack.removeFirst();
             
-            depth = stack.peekFirst().getDepth();
+            depth = removedNode.getDepth();
 
             if (output.size() < depth) {
                 // Add it to the output
-                output.add(stack.peekFirst());
+                output.add(removedNode);
                 nodesStored++;
             } else if (output.size() > 0) {
                 output.remove();
                 nodesStored--;
             }
-
-            Node removedNode = stack.removeFirst();
 
             if (maxDepth == 0 || depth < maxDepth) {
                 // Then add all children to the stack
@@ -84,12 +84,12 @@ public class DepthFirst extends Search {
                     stack.addFirst(visitedNode);
                 }
             }
-            
+
             currentNode = stack.peekFirst();
 
         }
 
-        if (stack.peekFirst() == null){
+        if (stack.peekFirst() == null) {
             depth = -1;
             return null;
         } else if (endState.equals(stack.peekFirst().getState())) {

@@ -28,6 +28,12 @@ public class Node {
         }
         //System.out.println(state);
     }
+    
+    protected Node(Node node){
+        this.state = node.getState();
+        this.direction = node.getDirection();
+        this.depth = node.getDepth();
+    }
 
     /**
      * @return the state
