@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -49,9 +47,9 @@ public class DepthFirst extends Search {
      * @return
      */
     @Override
-    protected ArrayList<Node> performSearch(Node startNode) {
+    protected ArrayList<Node> performSearch(Node startNode) throws Exception {
         // Make a queue for the output commands
-        Queue output = new LinkedList();
+        Queue<Node> output = new LinkedList<>();
 
         // The stack will hold the nodes still to be visited
         Deque<Node> stack = new ArrayDeque<>();
@@ -59,32 +57,42 @@ public class DepthFirst extends Search {
         // Add the start node
         stack.addFirst(startNode);
 
-        try {
-            // As we visit each state we check it's not the goal state
-            while (!endState.equals(stack.peekFirst().getState()) && stack.size() > 0) {
+        Node currentNode = startNode;
 
-                // If it isn't we increase the nodes expanded and stored
-                nodesExpanded++;
-                nodesStored++;
-                depth = stack.peekFirst().getDepth();
+        // As we visit each state we check it's not the goal state
+        while (currentNode != null  && stack.size() > 0 && !endState.equals(currentNode.getState())) {
 
+            // If it isn't we increase the nodes expanded and stored
+            nodesExpanded++;
+            
+            depth = stack.peekFirst().getDepth();
+
+            if (output.size() < depth) {
                 // Add it to the output
                 output.add(stack.peekFirst());
+                nodesStored++;
+            } else if (output.size() > 0) {
+                output.remove();
+                nodesStored--;
+            }
 
-                Node removedNode = stack.removeFirst();
-                
-                if (maxDepth == 0 || depth < maxDepth) {
-                    // Then add all children to the stack
-                    for (Node visitedNode : removedNode.getChildren()) {
-                        stack.addFirst(visitedNode);
-                    }
+            Node removedNode = stack.removeFirst();
+
+            if (maxDepth == 0 || depth < maxDepth) {
+                // Then add all children to the stack
+                for (Node visitedNode : removedNode.getChildren()) {
+                    stack.addFirst(visitedNode);
                 }
             }
-        } catch (Exception ex) {
-            Logger.getLogger(DepthFirst.class.getName()).log(Level.SEVERE, null, ex);
+            
+            currentNode = stack.peekFirst();
+
         }
 
-        if (endState.equals(stack.peekFirst().getState())) {
+        if (stack.peekFirst() == null){
+            depth = -1;
+            return null;
+        } else if (endState.equals(stack.peekFirst().getState())) {
             ArrayList list = new ArrayList(output);
             return list;
         } else {

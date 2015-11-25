@@ -33,7 +33,7 @@ public abstract class Search {
         return performSearch(new Node(startState, null, 0));
     }
     
-    protected abstract ArrayList<Node> performSearch(Node startNode);
+    protected abstract ArrayList<Node> performSearch(Node startNode) throws Exception;
     
         /**
      * @return the startState
