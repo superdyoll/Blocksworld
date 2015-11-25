@@ -31,7 +31,7 @@ public class Main {
             endState.getState()[2][0] = 1;
             endState.getState()[1][0] = 2;
             endState.getState()[2][2] = 9;
-            Search searchDFS = new DepthFirst(startState, endState);
+            Search searchDFS = new DepthFirst(startState, endState,5);
             outputSearch(searchDFS);
 
             startState = new Board(3);
@@ -46,6 +46,19 @@ public class Main {
 
             Search searchBFS = new BredthFirst(startState, endState);
             outputSearch(searchBFS);
+            
+            startState = new Board(3);
+            startState.getState()[2][0] = 1;
+            startState.getState()[2][1] = 2;
+            startState.getState()[1][1] = 9;
+
+            endState = new Board(3);
+            endState.getState()[2][0] = 1;
+            endState.getState()[1][0] = 2;
+            endState.getState()[2][2] = 9;
+
+            //Search searchIDS = new IterativeDeepening(startState, endState);
+            //outputSearch(searchIDS);
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }

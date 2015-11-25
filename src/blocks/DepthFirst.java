@@ -19,6 +19,8 @@ import java.util.logging.Logger;
  */
 public class DepthFirst extends Search {
 
+    int maxDepth;
+
     /**
      *
      * @param startState
@@ -26,6 +28,19 @@ public class DepthFirst extends Search {
      */
     public DepthFirst(Board startState, Board endState) {
         super(startState, endState);
+        this.maxDepth = 0;
+    }
+
+    /**
+     * max depth specifies how deep the search should go
+     *
+     * @param startState
+     * @param endState
+     * @param maxDepth
+     */
+    public DepthFirst(Board startState, Board endState, int maxDepth) {
+        super(startState, endState);
+        this.maxDepth = maxDepth;
     }
 
     /**
@@ -43,10 +58,11 @@ public class DepthFirst extends Search {
 
         // Add the start node
         stack.addFirst(startNode);
+
         try {
             // As we visit each state we check it's not the goal state
-            while (!endState.equals(stack.peekFirst().getState())) {
-                
+            while (!endState.equals(stack.peekFirst().getState()) && stack.size() > 0) {
+
                 // If it isn't we increase the nodes expanded and stored
                 nodesExpanded++;
                 nodesStored++;
@@ -54,17 +70,26 @@ public class DepthFirst extends Search {
 
                 // Add it to the output
                 output.add(stack.peekFirst());
-                
-                // Then add all children to the stack
-                for (Node visitedNode : stack.removeFirst().getChildren()) {
-                    stack.addFirst(visitedNode);
-                }
 
+                Node removedNode = stack.removeFirst();
+                
+                if (maxDepth == 0 || depth < maxDepth) {
+                    // Then add all children to the stack
+                    for (Node visitedNode : removedNode.getChildren()) {
+                        stack.addFirst(visitedNode);
+                    }
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(DepthFirst.class.getName()).log(Level.SEVERE, null, ex);
         }
-        ArrayList list = new ArrayList(output);
-        return list;
+
+        if (endState.equals(stack.peekFirst().getState())) {
+            ArrayList list = new ArrayList(output);
+            return list;
+        } else {
+            depth = -1;
+            return null;
+        }
     }
 }
