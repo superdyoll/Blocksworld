@@ -15,6 +15,8 @@ public abstract class Search {
 
     protected Board startState;
     protected Board endState;
+    private int nodesExpanded;
+    private int nodesStored;
     
     /**
      *
@@ -44,5 +46,33 @@ public abstract class Search {
      */
     public Board getEndState() {
         return endState;
+    }
+
+    /**
+     * @return the nodesExpanded
+     */
+    public int getNodesExpanded() {
+        return nodesExpanded;
+    }
+
+    /**
+     * @param nodesExpanded the nodesExpanded to set
+     */
+    public void setNodesExpanded(int nodesExpanded) {
+        this.nodesExpanded = nodesExpanded;
+    }
+
+    /**
+     * @return the nodesStored
+     */
+    public int getNodesStored() {
+        return nodesStored;
+    }
+
+    /**
+     * @param nodesStored the nodesStored to set
+     */
+    public void setNodesStored(int nodesStored) {
+        this.nodesStored = nodesStored;
     }
 }
