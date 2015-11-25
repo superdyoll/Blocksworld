@@ -31,9 +31,21 @@ public class Main {
             endState.getState()[2][0] = 1;
             endState.getState()[1][0] = 2;
             endState.getState()[2][2] = 9;
-            DepthFirst searchDFS = new DepthFirst(startState, endState);
+            Search searchDFS = new DepthFirst(startState, endState);
             outputSearch(searchDFS);
 
+            startState = new Board(3);
+            startState.getState()[2][0] = 1;
+            startState.getState()[2][1] = 2;
+            startState.getState()[1][1] = 9;
+
+            endState = new Board(3);
+            endState.getState()[2][0] = 1;
+            endState.getState()[1][0] = 2;
+            endState.getState()[2][2] = 9;
+
+            Search searchBFS = new BredthFirst(startState, endState);
+            outputSearch(searchBFS);
         } catch (Exception ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -42,17 +54,12 @@ public class Main {
     public void outputSearch(Search theSearch) throws Exception {
         ArrayList<Node> returnedNodes = theSearch.performSearch();
 
-        System.out.println("The route is as such");
-
-        int finalDepth = 0;
-        for (Node returnedNode : returnedNodes) {
-            System.out.println(returnedNode.getDirection());
-            if (returnedNode.getDepth() > finalDepth) {
-                finalDepth = returnedNode.getDepth();
-            }
-        }
+        //System.out.println("The route is as such");
+        //for (Node returnedNode : returnedNodes) {
+        //   System.out.println(returnedNode.getDirection());
+        //}
         System.out.println("");
-        System.out.println("The deepest depth was " + finalDepth);
+        System.out.println("It took " + theSearch.getDepth() + " moves");
         System.out.println("Time Complexity " + theSearch.getNodesExpanded());
         System.out.println("Space Complexity " + theSearch.getNodesStored());
     }

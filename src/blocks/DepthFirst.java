@@ -5,7 +5,11 @@
  */
 package blocks;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,8 +17,8 @@ import java.util.logging.Logger;
  *
  * @author Lloyd
  */
-public class DepthFirst extends Search{
-    
+public class DepthFirst extends Search {
+
     /**
      *
      * @param startState
@@ -29,38 +33,38 @@ public class DepthFirst extends Search{
      * @param startNode
      * @return
      */
-    protected ArrayList<Node> performSearch(Node startNode){
-        System.out.println("This node is going " + startNode.getDirection());
-        ArrayList<Node> returnArray = new ArrayList<>();
-        if (startNode.getState().equals(endState)){
-            returnArray.add(startNode);
-            nodesExpanded++;
-            nodesStored++;
-        }else{
-            try {
-                if (startNode.setChildren() > 0){
-                    ArrayList<Node> children = startNode.getChildren();
-                    for (Node nextNode : children) {
-                        ArrayList <Node> searchResults = performSearch(nextNode);
-                        if (searchResults != null){
-                            returnArray.add(startNode);
-                            returnArray.addAll(searchResults);
-                            nodesExpanded++;
-                            nodesStored++;
-                            break;
-                        }
-                    }
-                }else{
-                    return null;
-                }
-            } catch (Exception ex) {
-                Logger.getLogger(DepthFirst.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        return returnArray;
-    }
-    
+    @Override
+    protected ArrayList<Node> performSearch(Node startNode) {
+        // Make a queue for the output commands
+        Queue output = new LinkedList();
 
-    
-    
+        // The stack will hold the nodes still to be visited
+        Deque<Node> stack = new ArrayDeque<>();
+
+        // Add the start node
+        stack.addFirst(startNode);
+        try {
+            // As we visit each state we check it's not the goal state
+            while (!endState.equals(stack.peekFirst().getState())) {
+                
+                // If it isn't we increase the nodes expanded and stored
+                nodesExpanded++;
+                nodesStored++;
+                depth = stack.peekFirst().getDepth();
+
+                // Add it to the output
+                output.add(stack.peekFirst());
+                
+                // Then add all children to the stack
+                for (Node visitedNode : stack.removeFirst().getChildren()) {
+                    stack.addFirst(visitedNode);
+                }
+
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(DepthFirst.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        ArrayList list = new ArrayList(output);
+        return list;
+    }
 }

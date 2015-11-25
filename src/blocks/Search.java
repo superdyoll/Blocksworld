@@ -15,8 +15,9 @@ public abstract class Search {
 
     protected Board startState;
     protected Board endState;
-    protected int nodesExpanded;
-    protected int nodesStored;
+    protected int nodesExpanded = 0;
+    protected int nodesStored = 0;
+    protected int depth = 0;
     
     /**
      *
@@ -74,5 +75,19 @@ public abstract class Search {
      */
     public void setNodesStored(int nodesStored) {
         this.nodesStored = nodesStored;
+    }
+
+    /**
+     * @return the depth
+     */
+    public int getDepth() {
+        return depth;
+    }
+
+    /**
+     * @param depth the depth to set
+     */
+    public void setDepth(int depth) {
+        this.depth = depth;
     }
 }

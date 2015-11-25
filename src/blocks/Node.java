@@ -39,7 +39,10 @@ public class Node {
     /**
      * @return the children
      */
-    public ArrayList<Node> getChildren() {
+    public ArrayList<Node> getChildren() throws Exception {
+        if (children == null){
+            setChildren();
+        }
         return children;
     }
 
@@ -55,14 +58,14 @@ public class Node {
     public int setChildren(Board board) throws Exception{
         this.children = new ArrayList<>();
         ArrayList<Board.Direction> directions = board.findPossibleMoves();
-        System.out.print("We can go in these directions ");
+        //System.out.print("We can go in these directions ");
         for (Board.Direction currentDirection : directions) {
-            System.out.print(currentDirection);
+            //System.out.print(currentDirection);
             Board replicate = board.clone();
             Node newNode = new Node(replicate, currentDirection, depth + 1);
             this.addChild(newNode);
         }
-        System.out.println("");
+        //System.out.println("");
         return this.children.size();
     }
 
