@@ -1,0 +1,3 @@
+NoNodes, BFS (Depth) , BFS (Time), BFS (Space),DFS (Depth) , DFS (Time), DFS (Space),IDS (Depth) , IDS (Time), IDS (Space),A*S (Depth) , A*S (Time), A*S (Space)
+1,0,53,53,60155,1793698,1793672,0,1,0,1,26,78
+2,1,223,223,71150,1963015,1962989,1,6,1,2,52,156

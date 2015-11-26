@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class Main {
 
     FileWriter writer;
-    int MAX_DIFFICULTY = 20;
+    int MAX_DIFFICULTY = 30;
     
     public static void main(String[] args) {
         Main mainClass = new Main();

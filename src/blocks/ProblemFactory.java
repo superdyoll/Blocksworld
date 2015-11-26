@@ -49,7 +49,7 @@ public class ProblemFactory {
             searchAStar = new AStar(startBoard, returnBoard);
             searchAStar.performSearch();
         } while (searchAStar.getDepth() != noMoves);
-        //System.out.println(noMoves + " PROBLEM GENERATED");
+        System.out.println(noMoves + " PROBLEM GENERATED");
         return returnBoard;
     }
 
