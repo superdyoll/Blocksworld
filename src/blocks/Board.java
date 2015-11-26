@@ -10,8 +10,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,7 +30,16 @@ public class Board implements Comparable<Board> {
 
     public enum Direction {
 
-        LEFT, RIGHT, UP, DOWN
+        LEFT, RIGHT, UP, DOWN;
+
+        private static final List<Direction> values = Collections.unmodifiableList(Arrays.asList(values()));
+
+        private static final int size = values.size();
+        private static final Random randomGen = new Random();
+
+        public static Direction randomDirection() {
+            return values.get(randomGen.nextInt(size));
+        }
     }
 
     /* On the board 0 is considered to be a blank square and the value
@@ -287,8 +298,10 @@ public class Board implements Comparable<Board> {
         Board returnBoard = null;
         try {
             returnBoard = new Board(clone);
+
         } catch (Exception ex) {
-            Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Board.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
         return returnBoard;
     }
