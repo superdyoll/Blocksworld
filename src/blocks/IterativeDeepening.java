@@ -26,7 +26,7 @@ public class IterativeDeepening extends Search {
         do {
             returnedList = DFS.performSearch();
             setDepth(DFS.getDepth());
-            setNodesExpanded(DFS.getNodesExpanded());
+            setNodesExpanded(DFS.getNodesExpanded()  + getNodesExpanded());
             setNodesStored(DFS.getNodesStored());
             maxDepth++;
             DFS = new DepthFirst(startState, endState, maxDepth);
