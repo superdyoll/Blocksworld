@@ -21,6 +21,8 @@ public class AStar extends Search{
 
     @Override
     protected ArrayList<Node> performSearch(Node startNode) throws Exception {
+        nodesExpanded = 0;
+        nodesStored = 0;
         
         Comparator<CostNode> comparator = new CostNodeComparator();
         PriorityQueue<CostNode> nodeQueue = new PriorityQueue<>(comparator);
@@ -48,7 +50,7 @@ public class AStar extends Search{
     }
     
     protected int totalCost(Node currentNode){
-        int totalCost = costSoFar(currentNode) + estimatedCost(currentNode)/2;
+        int totalCost = costSoFar(currentNode) + estimatedCost(currentNode);
         //System.out.println("Total cost: " + totalCost);
         return totalCost;
     }

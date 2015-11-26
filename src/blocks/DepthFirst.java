@@ -48,6 +48,8 @@ public class DepthFirst extends Search {
      */
     @Override
     protected ArrayList<Node> performSearch(Node startNode) throws Exception {
+        nodesExpanded = 0;
+        nodesStored = 0;
         // Make a queue for the output commands
         Queue<Node> output = new LinkedList<>();
 
@@ -66,7 +68,7 @@ public class DepthFirst extends Search {
             nodesExpanded++;
 
             Node removedNode = stack.removeFirst();
-            
+
             depth = removedNode.getDepth();
 
             if (output.size() < depth) {

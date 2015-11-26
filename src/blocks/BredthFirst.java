@@ -21,6 +21,8 @@ public class BredthFirst extends Search {
 
     @Override
     protected ArrayList<Node> performSearch(Node startNode) throws Exception {
+        nodesExpanded = 0;
+        nodesStored = 0;
         Queue<Node> output = new LinkedList<>();
         Queue<Node> queue = new LinkedList<>();
         queue.add(startNode);
