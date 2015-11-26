@@ -48,7 +48,7 @@ public class AStar extends Search{
     }
     
     protected int totalCost(Node currentNode){
-        int totalCost = costSoFar(currentNode) + estimatedCost(currentNode);
+        int totalCost = costSoFar(currentNode) + estimatedCost(currentNode)/2;
         //System.out.println("Total cost: " + totalCost);
         return totalCost;
     }

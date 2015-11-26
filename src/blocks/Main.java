@@ -8,6 +8,7 @@ package blocks;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,7 +17,7 @@ import java.util.logging.Logger;
  * @author Lloyd
  */
 public class Main {
-
+    
     FileWriter writer;
     int MAX_DIFFICULTY = 30;
     
@@ -24,10 +25,10 @@ public class Main {
         Main mainClass = new Main();
         mainClass.run();
     }
-
+    
     public void run() {
         try {
-            writer = new FileWriter("to"+MAX_DIFFICULTY+".csv");
+            writer = new FileWriter("to" + MAX_DIFFICULTY + "3.csv");
             writer.append("NoNodes, BFS (Depth) , BFS (Time), BFS (Space),"
                     + "DFS (Depth) , DFS (Time), DFS (Space),"
                     + "IDS (Depth) , IDS (Time), IDS (Space),"
@@ -82,27 +83,38 @@ public class Main {
             }
             
             writer.flush();
-	    writer.close();
+            writer.close();
         } catch (IOException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void outputSearch(Search theSearch) throws Exception {
-        int sumSearch = 0, sumExpand = 0 , sumStored = 0, totalSearches = 0;
+        ArrayList<Integer> searchList = new ArrayList<>();
+        ArrayList<Integer> expandList = new ArrayList<>();
+        ArrayList<Integer> storedList = new ArrayList<>();
         for (int i = 0; i <= 50; i++) {
             theSearch.performSearch();
-            sumSearch += theSearch.getDepth();
-            sumExpand += theSearch.getNodesExpanded();
-            sumStored += theSearch.getNodesStored();
-            totalSearches ++;
+            searchList.add(theSearch.getDepth());
+            expandList.add(theSearch.getNodesExpanded());
+            storedList.add(theSearch.getNodesStored());
         }
-        int avgSearch = sumSearch / totalSearches;
-        int avgExpand = sumExpand / totalSearches;
-        int avgStored = sumStored / totalSearches;
+        long avgSearch = Math.round(median(searchList));
+        long avgExpand = Math.round(median(expandList));
+        long avgStored = Math.round(median(storedList));
         
         writer.append("," + avgSearch);
         writer.append("," + avgExpand);
         writer.append("," + avgStored);
+    }
+    
+    public static double median(ArrayList<Integer> m) {
+        Collections.sort(m);
+        int middle = m.size() / 2;
+        if (m.size() % 2 == 1) {
+            return m.get(middle);
+        } else {
+            return (m.get(middle - 1) + m.get(middle)) / 2.0;
+        }
     }
 }
